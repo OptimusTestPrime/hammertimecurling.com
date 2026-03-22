@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HammerTime Curling</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+```
+:root {
+  --navy:      #0d1b2a;
+  --navy-mid:  #1a2e42;
+  --navy-light:#243b55;
+  --blue:      #3a9bd5;
+  --blue-light:#5bb8f5;
+  --ice:       #d6eeff;
+  --white:     #ffffff;
+  --gold:      #f5c842;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background-color: var(--navy);
+  color: var(--white);
+  font-family: 'Barlow', sans-serif;
+  overflow-x: hidden;
+}
+
+/* ── ICE SHEET BACKGROUND ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 119px,
+      rgba(58,155,213,0.06) 120px
+    ),
+    repeating-linear-gradient(
+      180deg,
+      transparent,
+      transparent 59px,
+      rgba(58,155,213,0.04) 60px
+    ),
+    radial-gradient(ellipse at 50% 0%, #1a3a5c 0%, var(--navy) 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── HERO ── */
+.hero {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 60px 24px 80px;
+}
+
+.hero-hog-line {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(600px, 90vw);
+  height: 4px;
+  background: var(--blue);
+  border-radius: 2px;
+  opacity: 0.5;
+}
+
+.hero-hog-line::before,
+.hero-hog-line::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 12px;
+  height: 12px;
+  background: var(--blue);
+  border-radius: 50%;
+}
+.hero-hog-line::before { left: -6px; }
+.hero-hog-line::after  { right: -6px; }
+
+.mascot-wrap {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 32px;
+  animation: floatBob 3.5s ease-in-out infinite;
+}
+
+@keyframes floatBob {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-14px); }
+}
+
+.mascot-wrap img {
+  width: min(220px, 55vw);
+  height: auto;
+  filter: drop-shadow(0 12px 32px rgba(58,155,213,0.5));
+}
+
+.mascot-shadow {
+  width: 60%;
+  height: 16px;
+  background: radial-gradient(ellipse, rgba(58,155,213,0.35), transparent 70%);
+  margin: -8px auto 0;
+  border-radius: 50%;
+  animation: shadowPulse 3.5s ease-in-out infinite;
+}
+
+@keyframes shadowPulse {
+  0%, 100% { transform: scaleX(1);   opacity: 0.6; }
+  50%       { transform: scaleX(0.7); opacity: 0.3; }
+}
+
+.site-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: clamp(3rem, 12vw, 7rem);
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, var(--white) 30%, var(--blue-light) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 16px;
+  animation: fadeUp 0.8s ease both;
+}
+
+.site-subtitle {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600;
+  font-size: clamp(1rem, 4vw, 1.5rem);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--blue-light);
+  margin-bottom: 24px;
+  animation: fadeUp 0.8s 0.15s ease both;
+}
+
+.hero-tagline {
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  color: var(--ice);
+  max-width: 520px;
+  line-height: 1.7;
+  opacity: 0.85;
+  margin-bottom: 48px;
+  animation: fadeUp 0.8s 0.3s ease both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── APP CARDS ── */
+.apps-section {
+  position: relative;
+  z-index: 1;
+  padding: 80px 24px 100px;
+}
+
+.section-label {
+  text-align: center;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin-bottom: 12px;
+}
+
+.section-title {
+  text-align: center;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  text-transform: uppercase;
+  margin-bottom: 56px;
+  color: var(--white);
+}
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px;
+  justify-content: center;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.card {
+  background: var(--navy-mid);
+  border: 1px solid rgba(58,155,213,0.2);
+  border-radius: 20px;
+  padding: 40px 36px;
+  flex: 1 1 340px;
+  max-width: 420px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--blue), var(--blue-light));
+  border-radius: 20px 20px 0 0;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(91,184,245,0.5);
+  box-shadow: 0 24px 60px rgba(58,155,213,0.2);
+}
+
+.card-icon {
+  font-size: 3rem;
+  margin-bottom: 16px;
+  display: block;
+}
+
+.card-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 2rem;
+  text-transform: uppercase;
+  color: var(--blue-light);
+  margin-bottom: 8px;
+  letter-spacing: 0.05em;
+}
+
+.card-tagline {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 16px;
+}
+
+.card-desc {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--ice);
+  opacity: 0.8;
+  margin-bottom: 28px;
+}
+
+.card-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, var(--blue), var(--blue-light));
+  color: var(--navy);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 12px 24px;
+  border-radius: 50px;
+  transition: opacity 0.2s;
+}
+
+.card:hover .card-cta { opacity: 0.85; }
+
+.card-cta svg {
+  width: 16px; height: 16px;
+  transition: transform 0.2s;
+}
+
+.card:hover .card-cta svg { transform: translateX(4px); }
+
+/* ── ABOUT STRIP ── */
+.about-strip {
+  position: relative;
+  z-index: 1;
+  background: var(--navy-mid);
+  border-top: 1px solid rgba(58,155,213,0.15);
+  border-bottom: 1px solid rgba(58,155,213,0.15);
+  padding: 72px 24px;
+  text-align: center;
+}
+
+.about-inner {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.about-strip h2 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: clamp(1.8rem, 5vw, 2.8rem);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  color: var(--white);
+}
+
+.about-strip p {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--ice);
+  opacity: 0.8;
+}
+
+/* ── FOOTER ── */
+footer {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 40px 24px;
+  font-size: 0.85rem;
+  color: rgba(214,238,255,0.35);
+  letter-spacing: 0.05em;
+}
+
+footer a {
+  color: var(--blue);
+  text-decoration: none;
+}
+
+/* ── DECORATIVE RINGS ── */
+.ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(58,155,213,0.08);
+  pointer-events: none;
+}
+.ring-1 { width: 500px; height: 500px; top: -100px; right: -150px; }
+.ring-2 { width: 300px; height: 300px; bottom: 60px; left: -80px; }
+.ring-3 { width: 200px; height: 200px; bottom: 120px; left: -20px; border-color: rgba(58,155,213,0.12); }
+```
+
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+
+  <section class="hero">
+    <div class="ring ring-1"></div>
+    <div class="ring ring-2"></div>
+    <div class="ring ring-3"></div>
+
+```
+<div class="mascot-wrap">
+  <img src="mascot.png" alt="HammerTime Curling mascot — a happy curling stone with a stopwatch" />
+</div>
+<div class="mascot-shadow"></div>
+
+<h1 class="site-title">HammerTime<br>Curling</h1>
+<p class="site-subtitle">Tools for the Ice</p>
+<p class="hero-tagline">
+  Practical apps built by a curler, for curlers. Time your deliveries,
+  track your shots, and sharpen your game — right from your phone at the rink.
+</p>
+
+<div class="hero-hog-line"></div>
+```
+
+  </section>
+
+  <!-- APPS -->
+
+  <section class="apps-section">
+    <p class="section-label">The Apps</p>
+    <h2 class="section-title">Pick Your Tool</h2>
+
+```
+<div class="cards">
+
+  <a class="card" href="https://optimustestprime.github.io/HammerTime/" target="_blank" rel="noopener">
+    <span class="card-icon">⏱️</span>
+    <div class="card-name">HammerTime</div>
+    <div class="card-tagline">Delivery Timer</div>
+    <p class="card-desc">
+      Measure your rock's travel time across three key intervals —
+      Back Line to Hog, T-Line to Hog, and Hog to Hog. Track your
+      last 10 deliveries with location tagging and analog or digital display.
+    </p>
+    <span class="card-cta">
+      Open App
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 8h10M9 4l4 4-4 4"/>
+      </svg>
+    </span>
+  </a>
+
+  <a class="card" href="https://optimustestprime.github.io/stone-stat" target="_blank" rel="noopener">
+    <span class="card-icon">📊</span>
+    <div class="card-name">StoneStat</div>
+    <div class="card-tagline">Shot Tracker</div>
+    <p class="card-desc">
+      Score every shot in a game with handle, rotation, shot type, and miss
+      analysis. View per-player percentages, track end scores, and export
+      your game history to CSV, JSON, or plain text.
+    </p>
+    <span class="card-cta">
+      Open App
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 8h10M9 4l4 4-4 4"/>
+      </svg>
+    </span>
+  </a>
+
+</div>
+```
+
+  </section>
+
+  <!-- ABOUT -->
+
+  <section class="about-strip">
+    <div class="about-inner">
+      <h2>Built on the Ice</h2>
+      <p>
+        HammerTime Curling started as a simple need: useful tools that actually
+        work at the rink, on your phone, without fuss. No accounts, no ads,
+        no internet required once loaded. Just curling.
+      </p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+
+  <footer>
+    <p>&copy; 2026 HammerTime Curling &mdash; <a href="https://optimustestprime.github.io">optimustestprime.github.io</a></p>
+  </footer>
+
+</body>
+</html>
